@@ -16,12 +16,12 @@ public class Client {
 
     void init() throws IOException {
         DatagramSocket clientSocket = new DatagramSocket();
-        InetAddress directoryServer1IP = InetAddress.getByName(Constants.SERVER_1_IP);
+        InetAddress directoryServer1IP = InetAddress.getLocalHost();
 
         byte[] receiveData = new byte[1024];
         byte[] sendData = Constants.INIT.getBytes();
 
-        DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, directoryServer1IP, Constants.DIRECTORY_SERVER_PORT);
+        DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, directoryServer1IP,Constants.DIRECTORY_SERVER_UDP_PORT);
         clientSocket.send(sendPacket);
 
         DatagramPacket receivePacket = new DatagramPacket(receiveData, receiveData.length);
