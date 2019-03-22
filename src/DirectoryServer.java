@@ -55,6 +55,17 @@ public class DirectoryServer{
         }
     }
 
+    void startUDPServer(){
+        Thread thread1 = new Thread(() -> {
+            try {
+                this.openUDPSocket();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
+        thread1.start();
+    }
+
 
     private byte[] init(){
         return this.getDSIP().toString().substring(1).getBytes();
