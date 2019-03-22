@@ -32,7 +32,7 @@ public class UDPServer {
 
     public void sendDatagram(String applicationData, InetAddress destinationIp, int destinationPort) throws IOException {
         System.out.println("sendDataGram()");
-        DatagramSocket socket = new DatagramSocket();
+        DatagramSocket socket = new DatagramSocket(this.udpPort);
         byte[] buf = applicationData.getBytes( StandardCharsets.UTF_8 );
         DatagramPacket packet = new DatagramPacket(buf, buf.length, destinationIp, destinationPort);
         socket.send(packet);
