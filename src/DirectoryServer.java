@@ -1,5 +1,8 @@
 
+import java.io.BufferedReader;
+import java.io.DataOutputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.*;
 
 public class DirectoryServer{
@@ -25,6 +28,7 @@ public class DirectoryServer{
     }
 
     void openUDPSocket() throws IOException {
+
         System.out.println("openUDPSocket()");
         DatagramSocket serverSocket = new DatagramSocket(DS_PORT);
         byte[] receiveData = new byte[1024];
@@ -51,9 +55,26 @@ public class DirectoryServer{
                     break;
                 default: System.out.println("Host #"+ directoryServerID +" rceived a bad message: "+message);
             }
-
         }
     }
+
+
+    void openTCPSocket() throws IOException {
+        String clientSentence;
+        String capitalizedSentence;
+        ServerSocket welcomeSocket = new ServerSocket(Constants.DIRECTORY_SERVER_TCP_PORT);
+
+        while (true) {
+            Socket connectionSocket = welcomeSocket.accept();
+            BufferedReader inFromClient = new BufferedReader(new InputStreamReader(connectionSocket.getInputStream()));
+            DataOutputStream outToClient = new DataOutputStream(connectionSocket.getOutputStream());
+            clientSentence = inFromClient.readLine();
+            System.out.println("Received: " + clientSentence);
+            capitalizedSentence = clientSentence.toUpperCase() + 'n';
+            outToClient.writeBytes(capitalizedSentence);
+        }
+    }
+
 
 
     private byte[] init(){

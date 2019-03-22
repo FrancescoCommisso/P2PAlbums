@@ -1,6 +1,8 @@
 class Constants {
 
-    static final int DIRECTORY_SERVER_PORT = 1234;
+    static final int DIRECTORY_SERVER_UDP_PORT = 1111;
+    static final int DIRECTORY_SERVER_TCP_PORT = 2222;
+
     static final String SERVER_1_IP = "127.0.0.1";
 
     static final String INIT = "init";

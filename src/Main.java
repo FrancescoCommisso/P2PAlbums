@@ -1,8 +1,9 @@
 import java.io.IOException;
+import java.util.concurrent.TimeUnit;
 
 public class Main {
 
-    public static void main(String args[]) throws IOException {
+    public static void main(String args[]) throws IOException, InterruptedException {
         DirectoryServer ds = new DirectoryServer(Constants.SERVER_1_IP,1);
         Client client = new Client();
 
@@ -14,6 +15,8 @@ public class Main {
             }
         });
         thread1.start();
+
+        TimeUnit.SECONDS.sleep(10);
 
         client.init();
 
