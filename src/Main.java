@@ -11,11 +11,11 @@ public class Main {
 
         ds1.openUDPSocket();
 //        ds2.openUDPSocket();
-//
-//        ds1.openTCPSocket();
-//        ds2.openTCPSocket();
-//        TimeUnit.SECONDS.sleep(1);
-//        ds1.sendTCPMessage("You getting these messages boy?",InetAddress.getByName(Constants.SERVER_2_IP));
+
+        ds1.openTCPSocket();
+        ds2.openTCPSocket();
+        TimeUnit.SECONDS.sleep(1);
+        ds1.sendTCPMessage("You getting these messages boy?",InetAddress.getByName(Constants.SERVER_2_IP));
 
         client.init();
 
