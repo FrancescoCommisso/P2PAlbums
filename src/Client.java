@@ -16,7 +16,7 @@ public class Client {
 
     void init() throws IOException {
         DatagramSocket clientSocket = new DatagramSocket();
-        InetAddress directoryServer1IP = InetAddress.getLocalHost();
+        InetAddress directoryServer1IP = InetAddress.getByName(Constants.SERVER_1_IP);
 
         byte[] receiveData = new byte[1024];
         byte[] sendData = Constants.INIT.getBytes();

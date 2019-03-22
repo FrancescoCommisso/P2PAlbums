@@ -6,15 +6,15 @@ import java.net.*;
 
 class DirectoryServer{
 
-    private String IPAddress;
+    private InetAddress IPAddress;
     private int directoryServerID;
     private int leftNeighbor;
     private int rightNeighbor;
 
 
-    DirectoryServer(String IPAddress, int directoryServerID) {
+    DirectoryServer(String IPAddress, int directoryServerID) throws UnknownHostException {
 
-        this.IPAddress =IPAddress;
+        this.IPAddress =InetAddress.getByName(IPAddress);
         this.directoryServerID = directoryServerID;
     }
 
@@ -23,7 +23,7 @@ class DirectoryServer{
     }
 
     private void createUDPSocket() throws IOException {
-        DatagramSocket serverSocket = new DatagramSocket(createFakePortFromID(directoryServerID),InetAddress.getByName(Constants.LOCAL_IP));
+        DatagramSocket serverSocket = new DatagramSocket(createFakePortFromID(directoryServerID),IPAddress);
         System.out.println("DirectoryServer: "+ directoryServerID + " creating UDP Socket at: "+ serverSocket.getLocalAddress() +":"+serverSocket.getLocalPort());
 
         byte[] receiveData = new byte[1024];
@@ -67,11 +67,12 @@ class DirectoryServer{
     private void startListeningTCP() throws IOException {
         String clientMessage;
         String response;
-        ServerSocket welcomeSocket = new ServerSocket(createFakePortFromID(directoryServerID),0,InetAddress.getByName(Constants.LOCAL_IP));
+        ServerSocket welcomeSocket = new ServerSocket(Constants.DIRECTORY_SERVER_TCP_PORT,0,IPAddress);
         System.out.println("DirectoryServer: "+ directoryServerID + " creating TCP Socket at: "+ welcomeSocket.getInetAddress().toString() + ":" + welcomeSocket.getLocalPort());
 
         while (true) {
             Socket connectionSocket = welcomeSocket.accept();
+            System.out.println("somethings been accepted");
             BufferedReader inFromClient = new BufferedReader(new InputStreamReader(connectionSocket.getInputStream()));
             DataOutputStream outToClient = new DataOutputStream(connectionSocket.getOutputStream());
             clientMessage = inFromClient.readLine();
@@ -100,11 +101,11 @@ class DirectoryServer{
 
 
 
-    void sendTCPMessage(String data,InetAddress directoryServerIP,int remortePort) throws IOException {
+    void sendTCPMessage(String data,InetAddress directoryServerIP) throws IOException {
         String response;
 
-        Socket clientSocket = new Socket(directoryServerIP, remortePort);
-        System.out.println("sending: " + data + " to " + clientSocket.getLocalAddress()+":"+clientSocket.getPort());
+        Socket clientSocket = new Socket(directoryServerIP, Constants.DIRECTORY_SERVER_TCP_PORT);
+        System.out.println("sending: " + data + " to " + clientSocket.getInetAddress()+":"+clientSocket.getPort());
 
         DataOutputStream outToServer = new DataOutputStream(clientSocket.getOutputStream());
         BufferedReader inFromServer = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
@@ -117,7 +118,7 @@ class DirectoryServer{
 
 
     private byte[] init(){
-        return this.IPAddress.getBytes();
+        return this.IPAddress.toString().getBytes();
     }
 
     private void informAndUpdate(){
