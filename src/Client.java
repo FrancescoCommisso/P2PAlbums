@@ -1,48 +1,38 @@
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
-import java.io.BufferedReader;
-import java.io.File;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.net.*;
-import java.nio.charset.StandardCharsets;
 
 public class Client {
 
-    private String serverIps[];
+    private String directoryServerIPs[];
+    Client(){}
 
-    public Client(){
-
+    protected String[] getDirectoryServerIPs(){
+        return this.directoryServerIPs;
     }
 
-    protected String[] getServerIps(){
-        return this.serverIps;
+    public void setDirectoryServerIPs(String[] directoryServerIPs) {
+        this.directoryServerIPs = directoryServerIPs;
     }
 
-    public void setServerIps(String[] serverIps) {
-        this.serverIps = serverIps;
-    }
-
-    protected void init() throws IOException {
-        System.out.println("init()");
-
+    void init() throws IOException {
         DatagramSocket clientSocket = new DatagramSocket();
-        InetAddress server1IP = InetAddress.getByName("127.0.0.1");
+        InetAddress directoryServer1IP = InetAddress.getByName(Constants.SERVER_1_IP);
 
         byte[] receiveData = new byte[1024];
-        byte[] sendData = "init".getBytes();
+        byte[] sendData = Constants.INIT.getBytes();
 
-        DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, server1IP, Constants.SERVER_1_PORT);
+        DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, directoryServer1IP, Constants.DIRECTORY_SERVER_PORT);
         clientSocket.send(sendPacket);
 
         DatagramPacket receivePacket = new DatagramPacket(receiveData, receiveData.length);
         clientSocket.receive(receivePacket);
 
         String response = new String(receivePacket.getData(),receivePacket.getOffset(), receivePacket.getLength());
-        System.out.println("FROM SERVER:" + response);
+        System.out.println("FROM SERVER: " + response);
 
         clientSocket.close();
     }
+
 
 
 

@@ -5,27 +5,27 @@ import java.net.*;
 public class DirectoryServer{
 
     private static final int DS_PORT= 1234;
-    private InetAddress dsIP;
-    private int dsID;
+    private InetAddress IPAddress;
+    private int directoryServerID;
     private int leftNeighbor;
     private int rightNeighbor;
 
 
-    public DirectoryServer(String dsIP,int dsID) {
+    DirectoryServer(String IPAddress, int directoryServerID) {
         try {
-            this.dsIP=InetAddress.getByName(dsIP);
+            this.IPAddress =InetAddress.getByName(IPAddress);
         } catch (UnknownHostException e) {
             e.printStackTrace();
         }
-        this.dsID = dsID;
+        this.directoryServerID = directoryServerID;
     }
 
     private InetAddress getDSIP() {
-        return dsIP;
+        return IPAddress;
     }
 
-    public void startServer() throws IOException {
-        System.out.println("startServer()");
+    void openUDPSocket() throws IOException {
+        System.out.println("openUDPSocket()");
         DatagramSocket serverSocket = new DatagramSocket(DS_PORT);
         byte[] receiveData = new byte[1024];
         byte[] sendData;
@@ -49,7 +49,7 @@ public class DirectoryServer{
                     break;
                 case "exit": this.exit();
                     break;
-                default: System.out.println("Host #"+dsID+" rceived a bad message: "+message);
+                default: System.out.println("Host #"+ directoryServerID +" rceived a bad message: "+message);
             }
 
         }
@@ -57,7 +57,7 @@ public class DirectoryServer{
 
 
     private byte[] init(){
-        return this.getDSIP().toString().getBytes();
+        return this.getDSIP().toString().substring(1).getBytes();
     }
 
     private void informAndUpdate(){
