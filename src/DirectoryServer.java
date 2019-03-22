@@ -13,7 +13,6 @@ class DirectoryServer{
 
 
     DirectoryServer(String IPAddress, int directoryServerID) throws UnknownHostException {
-
         this.IPAddress =InetAddress.getByName(IPAddress);
         this.directoryServerID = directoryServerID;
     }
@@ -23,7 +22,7 @@ class DirectoryServer{
     }
 
     private void createUDPSocket() throws IOException {
-        DatagramSocket serverSocket = new DatagramSocket(createFakePortFromID(directoryServerID),IPAddress);
+        DatagramSocket serverSocket = new DatagramSocket(Constants.DIRECTORY_SERVER_UDP_PORT,IPAddress);
         System.out.println("DirectoryServer: "+ directoryServerID + " creating UDP Socket at: "+ serverSocket.getLocalAddress() +":"+serverSocket.getLocalPort());
 
         byte[] receiveData = new byte[1024];
@@ -72,14 +71,13 @@ class DirectoryServer{
 
         while (true) {
             Socket connectionSocket = welcomeSocket.accept();
-            System.out.println("somethings been accepted");
+
             BufferedReader inFromClient = new BufferedReader(new InputStreamReader(connectionSocket.getInputStream()));
             DataOutputStream outToClient = new DataOutputStream(connectionSocket.getOutputStream());
             clientMessage = inFromClient.readLine();
-            System.out.println("after clientMESSAGE");
 
-            System.out.println("Received: " + clientMessage);
-            response = clientMessage.toUpperCase() + 'n';
+            System.out.println("From Client: " + clientMessage);
+            response = "Got your message boy!" + '\n';
             outToClient.writeBytes(response);
         }
     }
@@ -105,7 +103,6 @@ class DirectoryServer{
         String response;
 
         Socket clientSocket = new Socket(directoryServerIP, Constants.DIRECTORY_SERVER_TCP_PORT);
-        System.out.println("sending: " + data + " to " + clientSocket.getInetAddress()+":"+clientSocket.getPort());
 
         DataOutputStream outToServer = new DataOutputStream(clientSocket.getOutputStream());
         BufferedReader inFromServer = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
