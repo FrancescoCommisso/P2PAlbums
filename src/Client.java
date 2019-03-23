@@ -22,7 +22,11 @@ public class Client {
         byte[] receiveData = new byte[1024];
         byte[] sendData = Constants.INIT.getBytes();
 
+<<<<<<< HEAD
         DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, directoryServer1IP, Constants.DIRECTORY_SERVER_UDP_PORT);
+=======
+        DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, directoryServer1IP,Constants.DIRECTORY_SERVER_UDP_PORT);
+>>>>>>> da3216ecb1c5e68881b5d85318b80acfea8a860d
         clientSocket.send(sendPacket);
 
         DatagramPacket receivePacket = new DatagramPacket(receiveData, receiveData.length);
