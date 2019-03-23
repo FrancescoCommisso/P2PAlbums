@@ -118,17 +118,11 @@ class DirectoryServer{
         return this.IPAddress.toString().getBytes();
     }
 
-    private void informAndUpdate(){
+    private void informAndUpdate(){}
 
-    }
+    private void queryForContent(){}
 
-    private void queryForContent(){
-
-    }
-
-    private void exit(){
-
-    }
+    private void exit(){}
 
 
 }
